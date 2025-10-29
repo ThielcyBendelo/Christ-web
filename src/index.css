@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira:wght@100..700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-[var(--bg)] text-[var(--muted)] m-0 p-0 box-border font-['Saira'];
+  }
+  :root {
+    --color-dark-100: #1a1a1a;
+    --color-dark-200: #1f1f1f;
+    --color-dark-300: #2d2d2d;
+    --color-dark-400: #3d3d3d;
+    --color-purple: #8b5cf6;
+    --color-pink: #ec4899;
+    --color-blue: #3b82f6;
+
+    /* RGB versions for opacity support */
+    --muted-2-rgb: 61 61 61;
+    --accent-1-rgb: 139 92 246;
+  }
+}
+.typewriter {
+  overflow: hidden;
+  border-right: 0.15em solid #8b5cf6;
+  white-space: nowrap;
+  width: 0;
+  animation: typing 3s steps(20, end) forwards, blink-caret 0.75s step-end 4;
+}
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 15ch;
+  }
+}
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #8b5cf6;
+  }
+}
+body {
+  background-color: var(--color-dark-100);
+  color: var(--color-dark-300);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Theme variables (light/dark) */
+:root {
+  --bg: var(--color-dark-100);
+  --surface: var(--color-dark-200);
+  --muted: var(--color-dark-300);
+  --muted-2: var(--color-dark-400);
+  --accent-1: var(--color-purple);
+  --accent-2: var(--color-pink);
+}
+
+[data-theme='light'] {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --muted: #334155;
+  --muted-2: #64748b;
+  --accent-1: #5b21b6;
+  --accent-2: #db2777;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Entrance animations (stagger friendly) */
+.fade-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 420ms ease, transform 420ms ease;
+}
+
+/* Small utilities */
+.bg-linear-to-r {
+  background-image: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+}
+.bg-linear-to-t {
+  background-image: linear-gradient(180deg, var(--accent-1), var(--accent-2));
+}
+
+/* Ensure body uses theme background */
+body {
+  background-color: var(--bg);
+  color: var(--muted);
+}
+
+/* Reusable card utilities */
+@layer components {
+  .card-base {
+    background-color: var(--surface);
+    border-radius: 0.75rem;
+    border: 1px solid rgba(var(--muted-2-rgb, 61 61 61), 0.6);
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 1px 3px 1px rgb(0 0 0 / 0.05);
+  }
+  .card-interactive {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .card-interactive:hover {
+    box-shadow: 0 6px 10px -2px rgb(0 0 0 / 0.25),
+      0 3px 6px -2px rgb(0 0 0 / 0.2);
+    transform: translateY(-0.125rem);
+    border-color: rgba(var(--accent-1-rgb, 139 92 246), 0.4);
+  }
+  .card-hover-scale {
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    will-change: transform;
+  }
+  .card-hover-scale:hover {
+    transform: scale(1.05);
+  }
+}
