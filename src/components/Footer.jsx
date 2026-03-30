@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   FaGithub,
   FaLinkedin,
@@ -6,7 +7,7 @@ import {
   FaFacebook,
   FaWhatsapp,
 } from 'react-icons/fa';
-import { contact } from '../assets/assets';
+import { contact } from '../assets/assets.js';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,6 +21,7 @@ export default function Footer() {
     WhatsApp: FaWhatsapp,
   };
 
+
   return (
     <footer className="bg-dark-200 text-gray-300 py-8 mt-16">
       <div className="max-w-6xl mx-auto px-4">
@@ -32,7 +34,7 @@ export default function Footer() {
               </span>
             </h3>
             <p className="text-sm text-gray-400">
-              Créons ensemble des expériences web exceptionnelles
+              Créons ensemble des expériences réseaux informatiques exceptionnelles
             </p>
           </div>
 
@@ -42,7 +44,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="#about"
+                  href="/about"
                   className="hover:text-purple transition-colors"
                 >
                   À propos
@@ -50,7 +52,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#skills"
+                  href="/skills"
                   className="hover:text-purple transition-colors"
                 >
                   Compétences
@@ -58,7 +60,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#projects"
+                  href="/projects"
                   className="hover:text-purple transition-colors"
                 >
                   Projets
@@ -66,7 +68,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#contact"
+                  href="/contact"
                   className="hover:text-purple transition-colors"
                 >
                   Contact
@@ -108,11 +110,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright uniquement */}
         <div className="mt-8 pt-8 border-t border-gray-700 text-center text-sm text-gray-400">
-          <p>
-            © {currentYear} Ir Bendelo DevFullStack. Tous droits réservés 2025.
-          </p>
+          <p>© {currentYear} Il Christ | Business. Tous droits réservés.</p>
         </div>
       </div>
     </footer>
