@@ -37,6 +37,8 @@ export default function About() {
             <LazyImage
               src={profileImg}
               alt="Profil"
+               style={{ objectPosition: 'center 10%' }}
+               priority={true}
               className={`w-48 h-48 md:w-60 md:h-60 rounded-full object-cover border-4 transition-all duration-500 relative z-10 
                 ${isDark ? 'border-blue-500/30 shadow-2xl shadow-blue-500/20' : 'border-white shadow-xl shadow-gray-200'}`}
             />

@@ -89,7 +89,9 @@ export default function Hero() {
                 <LazyImage
                   src={profile7}
                   alt="Ir Christ Ilunga"
-                  className="w-40 h-40 md:w-56 md:h-56 rounded-full object-cover border-4 border-white/20 shadow-[0_0_30px_rgba(139,92,246,0.5)] relative z-10"
+                  style={{ objectPosition: 'center 10%' }}
+                  priority={true}
+                  className="w-48 h-40 md:w-56 md:h-56 rounded-full object-cover border-4 border-white/20 shadow-[0_0_30px_rgba(139,92,246,0.5)] relative z-10"
                 />
                 <motion.div className="absolute inset-0 rounded-full border-2 border-dashed border-blue-400/40" animate={{ rotate: 360 }} transition={{ duration: 25, repeat: Infinity, ease: 'linear' }} />
               </motion.div>
@@ -119,7 +121,7 @@ export default function Hero() {
                 <span className="relative z-10">Me contacter</span>
               </button>
               <button onClick={() => navigate('/projects')} className="px-10 py-4 bg-transparent border-2 border-white/20 text-white rounded-full font-bold hover:bg-white/10 transition-all backdrop-blur-md">
-                Mes Projets
+                Projets
               </button>
             </div>
           </AnimatedSection>
