@@ -5,6 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "tailwindcss";
+
+/* Cette ligne force Tailwind à activer le mode sombre via votre attribut */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 @layer base {
   html {
     @apply scroll-smooth;

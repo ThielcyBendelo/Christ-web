@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
+import { logochristian } from '../assets/assets.js';
 
 export default function ProfessionalSplashScreen({ onComplete }) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -9,11 +9,11 @@ export default function ProfessionalSplashScreen({ onComplete }) {
 
   const loadingSteps = useMemo(
     () => [
-      { label: 'Initialisation...', duration: 800 },
-      { label: 'Chargement des ressources...', duration: 1000 },
-      { label: "Configuration de l'interface...", duration: 600 },
-      { label: 'Optimisation des performances...', duration: 700 },
-      { label: 'Finalisation...', duration: 500 },
+      { label: 'Initialisation des systèmes...', duration: 800 },
+      { label: 'Chargement des protocoles réseaux...', duration: 1000 },
+      { label: "Configuration de l'infrastructure...", duration: 600 },
+      { label: 'Sécurisation des accès...', duration: 700 },
+      { label: 'Finalisation du déploiement...', duration: 500 },
     ],
     []
   );
@@ -22,42 +22,28 @@ export default function ProfessionalSplashScreen({ onComplete }) {
     let progressInterval;
     let stepTimeout;
 
-    const runLoadingSequence = () => {
-      if (currentStep < loadingSteps.length) {
-        const step = loadingSteps[currentStep];
+    if (currentStep < loadingSteps.length) {
+      const step = loadingSteps[currentStep];
+      progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          const target = (currentStep + 1) * (100 / loadingSteps.length);
+          if (prev >= target) {
+            clearInterval(progressInterval);
+            return target;
+          }
+          return prev + 1;
+        });
+      }, step.duration / 20);
 
-        // Animation de la barre de progression
-        progressInterval = setInterval(() => {
-          setProgress((prev) => {
-            const newProgress =
-              prev + 100 / loadingSteps.length / (step.duration / 50);
-            if (
-              newProgress >=
-              (currentStep + 1) * (100 / loadingSteps.length)
-            ) {
-              clearInterval(progressInterval);
-              return (currentStep + 1) * (100 / loadingSteps.length);
-            }
-            return newProgress;
-          });
-        }, 50);
-
-        // Passer à l'étape suivante
-        stepTimeout = setTimeout(() => {
-          setCurrentStep((prev) => prev + 1);
-        }, step.duration);
-      } else {
-        // Finir le chargement
-        setTimeout(() => {
-          setIsLoading(false);
-          setTimeout(() => {
-            onComplete && onComplete();
-          }, 800);
-        }, 300);
-      }
-    };
-
-    runLoadingSequence();
+      stepTimeout = setTimeout(() => {
+        setCurrentStep((prev) => prev + 1);
+      }, step.duration);
+    } else {
+      setTimeout(() => {
+        setIsLoading(false);
+        setTimeout(() => onComplete && onComplete(), 800);
+      }, 500);
+    }
 
     return () => {
       clearInterval(progressInterval);
@@ -65,287 +51,115 @@ export default function ProfessionalSplashScreen({ onComplete }) {
     };
   }, [currentStep, onComplete, loadingSteps]);
 
-  const logoVariants = {
-    initial: { scale: 0, rotate: -180, opacity: 0 },
-    animate: {
-      scale: 1,
-      rotate: 0,
-      opacity: 1,
-      transition: {
-        duration: 1.2,
-        ease: 'easeOut',
-        type: 'spring',
-        stiffness: 100,
-      },
-    },
-    pulse: {
-      scale: [1, 1.05, 1],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      },
-    },
-  };
-
-  const textVariants = {
-    initial: { y: 30, opacity: 0 },
-    animate: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        delay: 0.5,
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const progressVariants = {
-    initial: { scaleX: 0 },
-    animate: {
-      scaleX: progress / 100,
-      transition: {
-        duration: 0.3,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const exitVariants = {
-    exit: {
-      scale: 0,
-      opacity: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeInOut',
-      },
-    },
-  };
-
   return (
     <AnimatePresence>
       {isLoading && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={exitVariants.exit}
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          style={{
-            background:
-              'linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%)',
-          }}
+          exit={{ scale: 1.1, opacity: 0, filter: "blur(20px)" }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black"
         >
-          {/* Animated Background */}
-          <div className="absolute inset-0 overflow-hidden">
-            {/* Floating particles */}
-            <div className="absolute inset-0">
-              {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-1 h-1 bg-blue-400 rounded-full opacity-30"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
-                  animate={{
-                    y: [-20, -40, -20],
-                    opacity: [0.3, 0.8, 0.3],
-                    scale: [0.5, 1, 0.5],
-                  }}
-                  transition={{
-                    duration: 3 + Math.random() * 2,
-                    repeat: Infinity,
-                    delay: Math.random() * 2,
-                    ease: 'easeInOut',
-                  }}
-                />
-              ))}
-            </div>
+          {/* Background Image avec Overlay sombre pour la lisibilité */}
+          <div 
+            className="absolute inset-0 opacity-40 grayscale"
+            style={{
+              backgroundImage: `url(${logochristian})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
 
-            {/* Geometric patterns */}
-            <div className="absolute inset-0 opacity-10">
-              <svg
-                className="w-full h-full"
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <pattern
-                    id="grid"
-                    width="10"
-                    height="10"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <path
-                      d="M 10 0 L 0 0 0 10"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="0.5"
-                    />
-                  </pattern>
-                </defs>
-                <rect
-                  width="100"
-                  height="100"
-                  fill="url(#grid)"
-                  className="text-white"
-                />
-              </svg>
-            </div>
+          {/* Particules flottantes */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(15)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-blue-500 rounded-full"
+                animate={{
+                  y: [0, -100],
+                  opacity: [0, 1, 0],
+                  scale: [1, 1.5, 0],
+                }}
+                transition={{
+                  duration: 2 + Math.random() * 3,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100 + 20}%`,
+                }}
+              />
+            ))}
           </div>
 
-          {/* Main Content */}
-          <div className="relative z-10 text-center max-w-md mx-auto px-6">
-            {/* Logo */}
+          {/* Contenu Central */}
+          <div className="relative z-10 w-full max-w-sm px-8 text-center">
+            
+            {/* Logo/Icon placeholder animé */}
             <motion.div
-              variants={logoVariants}
-              initial="initial"
-              animate={currentStep >= 2 ? 'pulse' : 'animate'}
-              className="mb-8"
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="mb-12 flex justify-center"
             >
-              <div className="relative mx-auto w-32 h-32 mb-6">
-                {/* Logo Background Circle */}
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-full shadow-2xl"></div>
-
-                {/* Inner Circle */}
-                <div className="absolute inset-2 bg-slate-900 rounded-full flex items-center justify-center">
-                  <span className="text-4xl font-bold text-white">IR</span>
-                </div>
-
-                {/* Rotating Border */}
-                <motion.div
-                  className="absolute inset-0 rounded-full border-4 border-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-border"
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
-                  style={{
-                    background:
-                      'linear-gradient(45deg, transparent, transparent), linear-gradient(45deg, #3b82f6, #a855f7)',
-                    backgroundClip: 'padding-box, border-box',
-                    backgroundOrigin: 'border-box',
-                  }}
+              <div className="relative">
+                <div className="w-20 h-20 border-2 border-blue-500/30 rounded-full animate-ping absolute inset-0" />
+                <img 
+                  src={logochristian} 
+                  alt="Logo" 
+                  className="w-20 h-20 rounded-2xl object-contain border border-white/10 p-2 bg-black/50 backdrop-blur-md"
                 />
               </div>
             </motion.div>
 
-            {/* Company Name */}
-            <motion.div
-              variants={textVariants}
-              initial="initial"
-              animate="animate"
-              className="mb-8"
-            >
-              <h1 className="text-4xl font-bold text-white mb-2">Ir Christ Ilunga</h1>
-              <p className="text-xl text-slate-300 font-light">
-                Solutions Digitales Innovantes
-              </p>
-              <div className="w-32 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto mt-4 rounded-full"></div>
-            </motion.div>
-
-            {/* Loading Steps */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.6 }}
-              className="mb-8"
-            >
-              <div className="text-slate-400 text-sm mb-4 min-h-[20px]">
-                {currentStep < loadingSteps.length && (
-                  <motion.span
+            {/* Steps & Progress */}
+            <div className="space-y-6">
+              <div className="h-6 overflow-hidden">
+                <AnimatePresence mode="wait">
+                  <motion.p
                     key={currentStep}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.4 }}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -20, opacity: 0 }}
+                    className="text-blue-400 font-mono text-xs uppercase tracking-[0.2em]"
                   >
-                    {loadingSteps[currentStep]?.label}
-                  </motion.span>
-                )}
+                    {loadingSteps[currentStep]?.label || "Prêt"}
+                  </motion.p>
+                </AnimatePresence>
               </div>
 
-              {/* Progress Bar */}
-              <div className="relative w-full h-2 bg-slate-700 rounded-full overflow-hidden">
-                <motion.div
-                  className="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 origin-left"
-                  variants={progressVariants}
-                  initial="initial"
-                  animate="animate"
-                  style={{ scaleX: progress / 100 }}
-                />
-
-                {/* Shimmer effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                  animate={{ x: ['-100%', '100%'] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
+              {/* Barre de progression stylisée */}
+              <div className="relative group">
+                <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-600"
+                    style={{ width: `${progress}%` }}
+                    transition={{ type: "spring", stiffness: 50 }}
+                  />
+                </div>
+                {/* Glow effect sous la barre */}
+                <div 
+                  className="absolute inset-0 blur-md bg-blue-500/20 rounded-full" 
+                  style={{ width: `${progress}%` }}
                 />
               </div>
 
-              {/* Progress Percentage */}
-              <div className="flex justify-between items-center mt-2 text-xs text-slate-500">
-                <span>Chargement</span>
-                <span>{Math.round(progress)}%</span>
+              <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/40">
+                <span>Christian Ilunga</span>
+                <span className="text-blue-500">{Math.round(progress)}%</span>
               </div>
-            </motion.div>
-
-            {/* Features Preview */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: currentStep >= 3 ? 1 : 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex justify-center space-x-8 text-slate-400"
-            >
-              {[
-                { icon: '🎨', label: 'Design' },
-                { icon: '⚡', label: 'Performance' },
-                { icon: '🚀', label: 'Innovation' },
-              ].map((feature, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{
-                    delay: 1.5 + index * 0.2,
-                    duration: 0.4,
-                    type: 'spring',
-                    stiffness: 200,
-                  }}
-                  className="text-center"
-                >
-                  <div className="text-2xl mb-1">{feature.icon}</div>
-                  <div className="text-xs">{feature.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
+            </div>
           </div>
 
-          {/* Loading Completion */}
-          {currentStep >= loadingSteps.length && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-emerald-600 to-teal-600"
-            >
-              <div className="text-center text-white">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                  className="text-6xl mb-4"
-                >
-                  ✓
-                </motion.div>
-                <h2 className="text-2xl font-bold">Application Prête !</h2>
-              </div>
-            </motion.div>
-          )}
+          {/* Footer discret */}
+          <div className="absolute bottom-10 w-full text-center">
+            <p className="text-[10px] text-white/20 uppercase tracking-[0.4em]">
+              Ingénieur Réseaux & Systèmes
+            </p>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

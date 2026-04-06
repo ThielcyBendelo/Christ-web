@@ -1,146 +1,94 @@
-import { about } from '../assets/assets.js';
-import {
-  profile1Image as profileImg,
-} from '../assets/assets.js';
-// eslint-disable-next-line no-unused-vars
-import { color, motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { about, profile7 as profileImg } from '../assets/assets.js';
+import { motion } from 'framer-motion';
+// 1. Import des icônes spécifiques à votre métier
+import { FaNetworkWired, FaShieldAlt, FaHeadset, FaEnvelope } from 'react-icons/fa';
 import LazyImage from './LazyImage';
 import GoogleMapsSection from './GoogleMapsSection';
 
 export default function About() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  const [theme, setTheme] = useState(document.documentElement.getAttribute('data-theme') || 'light');
 
-  const imageVariants = {
-    hidden: { opacity: 0, scale: 0.8, y: 30 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setTheme(document.documentElement.getAttribute('data-theme'));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
-    },
-  };
+  const isDark = theme === 'dark';
 
   return (
     <>
       <motion.section
         id="about"
-        className="relative py-20 px-4 bg-black-400 text-white-400 overflow-hidden"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={containerVariants}
+        className="relative pt-32 pb-24 px-6 overflow-hidden transition-colors duration-500"
+        style={{ backgroundColor: isDark ? '#050505' : '#ffffff' }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
       >
-        {/* Background image */}
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            backgroundcolor: 'rgba(0, 0, 0, 0.5)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            filter: 'brightness(0.15)',
-            opacity: 0.6,
-          }}
-        />
-
-        {/* Content */}
-        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
-          <motion.div
-            variants={imageVariants}
-            whileHover={{
-              scale: 1.08,
-              rotate: [0, -3, 3, 0],
-              transition: { duration: 0.3 },
-            }}
-          >
+        <div className="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
+          
+          {/* Image de Profil avec Halo */}
+          <div className="relative mb-12">
+            <div className={`absolute inset-0 rounded-full blur-3xl opacity-20 ${isDark ? 'bg-blue-500' : 'bg-blue-400'}`} />
             <LazyImage
               src={profileImg}
               alt="Profil"
-              className="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover mb-10 shadow-lg border-4 border-purple hover:scale-105 transition-transform duration-300"
-              placeholder={
-                <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-gradient-to-br from-purple/20 to-pink/20 animate-pulse border-4 border-purple mb-10 shadow-lg" />
-              }
+              className={`w-48 h-48 md:w-60 md:h-60 rounded-full object-cover border-4 transition-all duration-500 relative z-10 
+                ${isDark ? 'border-blue-500/30 shadow-2xl shadow-blue-500/20' : 'border-white shadow-xl shadow-gray-200'}`}
             />
-          </motion.div>
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold text-center mb-6"
-            variants={textVariants}
-          >
-            <span className="bg-gradient-to-r from-purple to-pink md:font-bold mb-4 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-transparent bg-clip-text">
+          </div>
+
+          {/* Titre */}
+          <h2 className="text-3xl md:text-5xl font-black text-center mb-8">
+            <span className="bg-gradient-to-r from-blue-600 to-emerald-500 text-transparent bg-clip-text">
               À propos de moi
             </span>
-          </motion.h2>
-          <motion.p
-            className="text-lg text-gray-300 text-center leading-relaxed max-w-2xl mb-6"
-            variants={textVariants}
-          >
+          </h2>
+
+          {/* Texte principal */}
+          <div className={`text-lg text-center leading-relaxed max-w-3xl mb-12 font-medium ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
             {about}
-          </motion.p>
-          <motion.p
-            className="text-xl md:text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-4"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            "Architecte de solutions connectées, spécialisé dans la conception, la sécurisation et l'optimisation des infrastructures réseau pour garantir une haute disponibilité de vos services."
-          </motion.p>
-          <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mt-4"
-            variants={textVariants}
-          />
-          <div className="mt-10 text-gray-400 text-sm italic">Disponible pour des projets professionnels et collaborations.</div>
-          <div className="mt-6">
-            <a
-              href="mailto:christiantshianyi22@gmail.com"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-purple to-pink text-white rounded-lg hover:scale-105 transition-transform duration-300"
-            >
-              Me contacter
-            </a>
           </div>
-          {/* <div className="mt-12">
-            <LazyImage
-              src={about}
-              alt="Illustration à propos"
-              className="w-full max-w-2xl rounded-lg shadow-lg border-4 border-purple hover:scale-105 transition-transform duration-300"
-              placeholder={
-                <div className="w-full max-w-2xl h-48 rounded-lg bg-gradient-to-br from-purple/20 to-pink/20 animate-pulse border-4 border-purple" />
-              }
-            /> */}
-          // Animation de fond subtil
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-purple/10 to-pink/10 animate-pulse"
-            variants={textVariants}
-          />
+
+          {/* GRID D'EXPERTISE AVEC ICONES */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-16">
+            {[
+              { icon: <FaNetworkWired />, title: "Infrastructure", desc: "Conception réseaux LAN/WAN" },
+              { icon: <FaShieldAlt />, title: "Sécurité", desc: "Protection des données & VPN" },
+              { icon: <FaHeadset />, title: "IT Support", desc: "Maintenance & Assistance" }
+            ].map((item, idx) => (
+              <motion.div 
+                key={idx}
+                whileHover={{ y: -5 }}
+                className={`p-6 rounded-2xl border text-center transition-all ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`}
+              >
+                <div className="text-blue-500 text-3xl mb-4 flex justify-center">{item.icon}</div>
+                <h4 className={`font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>{item.title}</h4>
+                <p className="text-sm text-gray-500">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Citation */}
+          <p className="text-xl md:text-2xl font-bold text-center italic bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-indigo-500 max-w-2xl mb-12">
+            "Architecte de solutions connectées, spécialisé dans la conception, la sécurisation et l'optimisation des infrastructures réseau."
+          </p>
+
+          {/* Bouton de contact avec icone */}
+          <a
+            href="mailto:christiantshianyi22@gmail.com"
+            className="group flex items-center gap-3 px-10 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg hover:bg-blue-700 transition-all duration-300"
+          >
+            <FaEnvelope className="group-hover:rotate-12 transition-transform" />
+            Me contacter
+          </a>
         </div>
-        <motion.div
-          className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-purple/20 to-pink/20 animate-pulse"
-          variants={textVariants}
-        />  
-  
       </motion.section>
+      
       <GoogleMapsSection />
     </>
   );

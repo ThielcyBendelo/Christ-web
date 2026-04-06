@@ -1,118 +1,152 @@
-import React, { useState } from "react";
-import QuoteModal from "./QuoteModal";
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaNetworkWired, FaServer, FaShieldAlt, FaTools, FaCloud, FaMicrochip, FaTimes, FaCheckCircle } from 'react-icons/fa';
 
-const services = [
-  {
-    title: "IT Support",
-    description:
-      "Assistance utilisateurs (niveau 1 & 2). dépannage matériel et logiciel. installation et configuration de systèmes informatiques. maintenance préventive et corrective. gestion des incidents et des demandes de service. support à distance et sur site.",
-    template:
-      "Contrat annuel, intervention à la demande, monitoring serveur, gestion des sauvegardes, optimisation réseau.",
-    price: "À partir de $",
-    duration: " à  semaines",
-    benefits: ["Support 24/7", "Monitoring proactif", "Reporting mensuel", "Interventions illimitées  "],
-    action: "Demander un devis",
-  },
-  {
-    title: "Réseaux informatiques",
-    description:
-      "Conception et administration de réseaux LAN/WAN. Configuration routeurs, switches et point d'accès. Calable réseaux (cuivre & fibre optique).",
-    template:
-      "Audit réseau, configuration équipements, optimisation performance, sécurité réseau, monitoring proactif.",
-    price: "À partir de $",
-    duration: " à  semaines",
-    benefits: ["Réseau performant", "Sécurité renforcée", "Support dédié", "Documentation complète"],
-    action: "Demander un devis",
-  },
-  {
-    title: "Vidéosurveillance",
-    description:
-      "Installation de caméras IP et analogiques. Configuration NVR/DVR. Accès à distance et surveillance en temps réel. Maintenance et optimisation des systmes et sécurité.",
-    template:
-      "Étude de site, installation caméras, configuration enregistrement, accès à distance, maintenance régulière.",
-    price: "À partir de $",
-    duration: " à  semaines",
-    benefits: ["Surveillance 24/7", "Accès à distance", "Maintenance régulière", "Système évolutif"],
-    action: "Demander un devis",
-  },
-];
+export default function Services() {
+  const [theme, setTheme] = useState(document.documentElement.getAttribute('data-theme') || 'light');
+  const [selectedService, setSelectedService] = useState(null);
 
-function Services() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedService, setSelectedService] = useState("");
+  useEffect(() => {
+    const observer = new MutationObserver(() => setTheme(document.documentElement.getAttribute('data-theme')));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
 
-  const handleQuoteClick = (serviceKey) => {
-    setSelectedService(serviceKey);
-    setModalOpen(true);
-  };
+  const isDark = theme === 'dark';
+
+  // RÉINTÉGRATION DES 6 SERVICES AVEC TOUS LES DÉTAILS
+  const services = [
+    {
+      title: "Infrastructures Réseaux",
+      desc: "Conception et installation de réseaux LAN/WAN haute performance.",
+      details: ["Audit réseau complet", "Câblage structuré", "Configuration Cisco/Juniper", "Solutions Wi-Fi 6"],
+      icon: <FaNetworkWired />
+    },
+    {
+      title: "Administration Systèmes",
+      desc: "Gestion de serveurs et virtualisation pour une disponibilité 24/7.",
+      details: ["Active Directory/DNS", "VMware & Hyper-V", "Windows/Linux Server", "Stockage SAN/NAS"],
+      icon: <FaServer />
+    },
+    {
+      title: "Cybersécurité",
+      desc: "Protection avancée de vos données et de vos infrastructures.",
+      details: ["Firewalling (Fortinet)", "VPN IPsec/SSL", "Audit de vulnérabilité", "Protection Endpoint"],
+      icon: <FaShieldAlt />
+    },
+    {
+      title: "Support & Maintenance",
+      desc: "Assistance technique réactive et suivi de votre parc IT.",
+      details: ["Support N1/N2/N3", "Maintenance préventive", "Helpdesk à distance", "Gestion d'inventaire"],
+      icon: <FaTools />
+    },
+    {
+      title: "Cloud & Virtualisation",
+      desc: "Migration et optimisation de vos ressources dans le cloud.",
+      details: ["Office 365 / Azure", "Migration Cloud", "Backup hors site", "Hébergement Web"],
+      icon: <FaCloud />
+    },
+    {
+      title: "Audit & Conseil IT",
+      desc: "Expertise technique pour moderniser votre vision technologique.",
+      details: ["Schéma directeur IT", "Audit de conformité", "Conseil stratégique", "Optimisation des coûts"],
+      icon: <FaMicrochip />
+    }
+  ];
 
   return (
-    <section className="py-10 px-4 bg-gradient-to-b from-black-400 via-bleu-400 to-gray-50" id="services">
-      <div className="max-w-6xl mx-auto">
-        <div className="mb-4 text-center">
-          <h2 className="text-4xl md:font-bold mb-4 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-transparent bg-clip-text mb-2 mt-16 ">Mes Services</h2>
-          <p className="text-lg text-gray-400 font-medium max-w-2xl mx-auto mb-6">Découvrez l'ensemble de mes préstations</p>
+    <section id="services" className="relative pt-32 pb-24 px-6 overflow-hidden transition-colors duration-500"
+      style={{ backgroundColor: isDark ? '#050505' : '#ffffff', marginTop: 0 }}>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-black mb-4 bg-gradient-to-r from-blue-600 to-emerald-500 text-transparent bg-clip-text">
+            Mes Services Experts
+          </h2>
+          <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            Solutions informatiques professionnelles par Christian Ilunga chez MUAMOKEL AGENCY.
+          </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10">
-          {services.map((service, idx) => (
-            <div
-              key={idx}
-              className="bg-gradient-to-br from-balck-400 via-bleu-400 to-black-400 rounded-3xl shadow-2xl p-8 flex flex-col items-center text-center border border-blue-100 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:bg-black-400 group"
-              style={{ animation: `fadeInUp 0.7s cubic-bezier(.39,.575,.565,1) ${idx * 0.15}s both` }}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.map((service, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ y: -10 }}
+              className={`p-8 rounded-3xl border transition-all flex flex-col h-full
+                ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-100 shadow-sm'}`}
             >
-              <div className="text-6xl mb-4 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">{service.icon}</div>
-              <h3 className="text-2xl md:font-bold mb-4 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-transparent bg-clip-text">{service.title}</h3>
-              <p className="text-gray-400 mb-2 font-medium">{service.description}</p>
-              <div className="mb-2 text-sm text-indigo-700 font-semibold">Template : {service.template}</div>
-              <div className="mb-2 text-sm text-blue-700"><span className="inline-block bg-blue-100 text-blue-800 rounded px-2 py-1 mr-1">Durée estimée :</span> {service.duration}</div>
-              <div className="mb-2 flex flex-wrap justify-center gap-2">
-                {service.benefits && service.benefits.map((b, i) => (
-                  <span key={i} className="inline-block bg-green-100 text-green-800 rounded-full px-3 py-1 text-xs font-semibold shadow">{b}</span>
+              <div className="text-blue-500 text-4xl mb-6">{service.icon}</div>
+              <h3 className={`text-xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>{service.title}</h3>
+              <p className={`text-sm mb-6 flex-grow ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{service.desc}</p>
+              
+              <ul className="mb-8 space-y-3">
+                {service.details.map((detail, i) => (
+                  <li key={i} className={`text-xs flex items-center gap-2 font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <FaCheckCircle className="text-blue-500 shrink-0" /> {detail}
+                  </li>
                 ))}
-              </div>
-              <div className="mb-2 text-sm">
-                <a
-                  href={service.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block text-blue-600 underline hover:text-blue-800 font-semibold transition"
-                >
-                  Voir un exemple
-                </a>
-              </div>
-              <div className="mb-4 text-lg font-bold text-green-700">Tarif : {service.price}</div>
-              <button
-                className="mt-auto px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold shadow hover:from-blue-700 hover:to-purple-700 transition-transform duration-300 transform hover:scale-105 focus:scale-100 active:scale-95"
-                onClick={() => handleQuoteClick(getServiceKey(service.title))}
+              </ul>
+
+              <button 
+                onClick={() => setSelectedService(service)}
+                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold transition-all shadow-lg shadow-blue-600/20 active:scale-95"
               >
-                {service.action}
+                Demander un devis
               </button>
-            </div>
+            </motion.div>
           ))}
         </div>
-        <QuoteModal
-          isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
-          defaultService={selectedService}
-        />
-        <style>{`
-          @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(40px) scale(0.96); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-          }
-        `}</style>
       </div>
+
+      {/* MODAL DE DEVIS COMPLET AVEC TOUS LES DÉTAILS */}
+      <AnimatePresence>
+        {selectedService && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setSelectedService(null)}
+              className="absolute inset-0 bg-black/90 backdrop-blur-md" 
+            />
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
+              className={`relative w-full max-w-2xl p-8 md:p-10 rounded-[2rem] shadow-2xl border max-h-[90vh] overflow-y-auto
+                ${isDark ? 'bg-gray-900 border-white/10 text-white' : 'bg-white border-gray-200 text-gray-900'}`}
+            >
+              <button onClick={() => setSelectedService(null)} className="absolute top-6 right-6 text-gray-500 hover:text-red-500 transition-colors">
+                <FaTimes size={24} />
+              </button>
+              
+              <div className="mb-8">
+                <span className="text-blue-500 font-bold uppercase tracking-widest text-xs">Formulaire de demande</span>
+                <h3 className="text-3xl font-black mt-2">Devis : {selectedService.title}</h3>
+              </div>
+              
+              <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  <input type="text" placeholder="Nom complet" className={`w-full p-4 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`} required />
+                  <input type="email" placeholder="Email professionnel" className={`w-full p-4 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`} required />
+                  <input type="tel" placeholder="Téléphone (+243...)" className={`w-full p-4 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`} />
+                </div>
+                <div className="space-y-4">
+                  <input type="text" placeholder="Nom de l'entreprise" className={`w-full p-4 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`} />
+                  <select className={`w-full p-4 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 ${isDark ? 'bg-white/5 border-white/10 text-gray-400' : 'bg-gray-50 border-gray-200'}`}>
+                    <option>Budget estimé</option>
+                    <option>Moins de 1000$</option>
+                    <option>1000$ - 5000$</option>
+                    <option>Plus de 5000$</option>
+                  </select>
+                  <textarea rows="1" placeholder="Délai souhaité" className={`w-full p-4 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`} />
+                </div>
+                <div className="md:col-span-2">
+                  <textarea rows="4" placeholder="Décrivez votre projet en quelques mots..." className={`w-full p-4 rounded-xl border outline-none focus:ring-2 focus:ring-blue-500 ${isDark ? 'bg-white/5 border-white/10' : 'bg-gray-50 border-gray-200'}`} required />
+                </div>
+                <button type="submit" className="md:col-span-2 py-5 bg-blue-600 text-white rounded-2xl font-black shadow-xl hover:bg-blue-700 transition-all uppercase tracking-widest text-sm">
+                  Envoyer ma demande de devis
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
-  // Helper pour convertir le titre en clé EmailJS
-  function getServiceKey(title) {
-    switch (title) {
-      case "IT Support": return "support";
-      case "Réseaux informatiques": return "reseaux";
-      case "Vidéosurveillance": return "videosurveillance";
-      default: return "autre";
-    }
-  }
 }
-
-export default Services;

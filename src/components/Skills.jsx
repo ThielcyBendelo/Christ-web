@@ -1,115 +1,96 @@
-import { skills } from '../assets/assets.js';
-import {
-  FaReact,
-  FaHtml5,
-  FaCss3Alt,
-  FaNodeJs,
-  FaGitAlt,
-} from 'react-icons/fa';
-import { SiJavascript } from 'react-icons/si';
-import { MdDevices } from 'react-icons/md';
-// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+// Import des icônes spécifiques à l'Infrastructure et aux Réseaux
+// On privilégie 'fa' pour la stabilité
+// 1. Utilisez FaLinux au lieu de SiLinux pour éviter les erreurs d'import
+import { 
+  FaNetworkWired, FaServer, FaShieldAlt, FaTerminal, 
+  FaWindows, FaLinux, FaCloud, FaMicrochip 
+} from 'react-icons/fa';
+import { SiCisco, SiVmware, SiWireshark } from 'react-icons/si'; 
+import { VscAzure } from "react-icons/vsc"; 
 
-// Map skill label -> icon component
+// 2. Mettez à jour la correspondance (Map)
 const skillIcons = {
-  JavaScript: SiJavascript,
-  React: FaReact,
-  HTML: FaHtml5,
-  CSS: FaCss3Alt,
-  'Node.js': FaNodeJs,
-  Git: FaGitAlt,
-  'Responsive Design': MdDevices,
+  'Cisco Networking': SiCisco,
+  'Administration Windows Server': FaWindows,
+  'Linux Administration': FaLinux, // Changé ici : FaLinux est plus fiable
+  'Cybersécurité & VPN': FaShieldAlt,
+  'Virtualisation (VMware)': SiVmware,
+  'Infrastructure Cloud': VscAzure,
+  'Audit Réseau (Wireshark)': SiWireshark,
+  'Support IT N3': FaTerminal,
 };
 
 export default function Skills() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  const [theme, setTheme] = useState(document.documentElement.getAttribute('data-theme') || 'light');
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut',
-      },
-    },
-  };
+  useEffect(() => {
+    const observer = new MutationObserver(() => setTheme(document.documentElement.getAttribute('data-theme')));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
+
+  const isDark = theme === 'dark';
+
+  // Liste de vos compétences réelles (à ajuster selon vos assets)
+  const mySkills = [
+    'Cisco Networking', 'Administration Windows Server', 'Linux Administration',
+    'Cybersécurité & VPN', 'Virtualisation (VMware)', 'Infrastructure Cloud',
+    'Audit Réseau (Wireshark)', 'Support IT N3'
+  ];
 
   return (
     <motion.section
       id="skills"
-      className="py-20 px-4 bg-black border-0"
-      style={{
-        fontFamily: 'Saira, Arial, Helvetica, sans-serif',
-        zIndex: 1000,
-      }}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
-      variants={containerVariants}
+      className="relative pt-32 pb-24 px-6 transition-colors duration-500 overflow-hidden"
+      style={{ backgroundColor: isDark ? '#050505' : '#ffffff', marginTop: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
     >
-      <div className="max-w-6xl mx-auto">
-        <motion.h2
-          className="text-4xl md:text-5xl font-bold text-center mb-4"
-          variants={itemVariants}
-        >
-          <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text">
-            Compétences
-          </span>
-        </motion.h2>
-        <motion.p
-          className="text-lg text-center text-gray-400 mb-10"
-          variants={itemVariants}
-        >
-          Maîtrise des technologies modernes pour concevoir, développer et optimiser des solutions digitales innovantes et performantes.
-        </motion.p>
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 sm:gap-6"
-          variants={containerVariants}
-        >
-          {skills.map((skill, idx) => {
+      {/* Halo décoratif */}
+      <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-full h-full opacity-10 pointer-events-none ${isDark ? 'bg-blue-600/20' : 'bg-blue-100/50'}`} />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-6xl font-black mb-6 bg-gradient-to-r from-blue-600 via-blue-400 to-emerald-500 text-transparent bg-clip-text uppercase tracking-tighter">
+            Expertise <span className="font-light italic text-blue-500/80">Technique</span>
+          </h2>
+          <div className="w-24 h-1.5 bg-blue-600 mx-auto rounded-full mb-8 shadow-[0_0_15px_rgba(37,99,235,0.4)]" />
+          <p className={`text-lg max-w-2xl mx-auto font-medium ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            Maîtrise des infrastructures critiques et des solutions réseaux pour garantir la performance et la sécurité des systèmes d'information.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {mySkills.map((skill, idx) => {
             const Icon = skillIcons[skill];
             return (
               <motion.div
                 key={idx}
-                className="group card-base card-interactive card-hover-scale p-4 sm:p-5 text-center select-none"
-                variants={itemVariants}
-                whileHover={{
-                  scale: 1.05,
-                  y: -5,
-                  transition: { duration: 0.2 },
-                }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ y: -8, scale: 1.02 }}
+                className={`group relative p-8 rounded-[2rem] border transition-all duration-300 text-center
+                  ${isDark ? 'bg-white/[0.03] border-white/10 hover:bg-white/[0.06] hover:border-blue-500/50' 
+                           : 'bg-white border-gray-100 shadow-xl shadow-gray-100 hover:border-blue-500'}`}
               >
-                <div
-                  className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-dark-200
-                                ring-1 ring-white/5 group-hover:ring-[var(--accent-1)]/40 transition-all shadow-inner"
-                >
-                  {Icon ? (
-                    <Icon className="h-6 w-6 text-gray-200 group-hover:drop-shadow-glow" />
-                  ) : (
-                    <span className="text-gray-300 text-lg">{skill[0]}</span>
-                  )}
+                {/* Icon Container */}
+                <div className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl transition-all duration-300
+                  ${isDark ? 'bg-white/5 text-blue-400 group-hover:bg-blue-500 group-hover:text-white' 
+                           : 'bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white shadow-inner'}`}>
+                  {Icon ? <Icon size={30} /> : <FaMicrochip size={30} />}
                 </div>
-                <span className="text-gray-200 font-medium tracking-wide">
+
+                <h3 className={`text-sm md:text-base font-bold tracking-tight leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                   {skill}
-                </span>
+                </h3>
+
+                {/* Petit indicateur de progression subtil */}
+                <div className="mt-4 w-8 h-1 bg-blue-500 mx-auto rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </motion.section>
   );

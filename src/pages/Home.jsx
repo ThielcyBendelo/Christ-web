@@ -9,10 +9,8 @@ export default function Home() {
   return (
     <>
       <NavbarSecured />
-      <div className="mt-24">
         <Hero />
         <FAQSection />
-      </div>
       <Footer />
     </>
   );

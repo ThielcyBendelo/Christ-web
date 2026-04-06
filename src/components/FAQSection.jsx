@@ -1,41 +1,83 @@
-import React from "react";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaChevronDown, FaQuestionCircle } from 'react-icons/fa';
 
-const faqs = [
+const faqData = [
   {
-    question: "Quels types de projets réalisez-vous ?",
-    answer: "Nous créons des sites web, applications mobiles, solutions cloud, design UI/UX, et proposons des services de cybersécurité et maintenance.",
+    question: "Quels types de réseaux installez-vous ?",
+    answer: "Conception et déploiement de réseaux LAN/WAN, configurations Cisco, VPN sécurisés et infrastructures Wi-Fi haute densité."
   },
   {
-    question: "Quels sont vos délais de livraison ?",
-    answer: "Les délais varient selon le projet : site vitrine (2-4 semaines), e-commerce (3-6 semaines), application mobile (3-6 semaines), etc.",
+    question: "Proposez-vous un support technique à distance ?",
+    answer: "Oui, j'interviens à distance pour la maintenance logicielle, la sécurité réseau et le dépannage des serveurs."
   },
   {
-    question: "Proposez-vous un accompagnement après livraison ?",
-    answer: "Oui, nous assurons un support technique, des mises à jour et une maintenance selon le contrat choisi.",
-  },
-  {
-    question: "Comment garantir la sécurité de mon projet ?",
-    answer: "Nous réalisons des audits, mettons en place des protocoles de sécurité, et assurons la conformité RGPD.",
-  },
+    question: "Comment se déroule un projet de consulting ?",
+    answer: "Nous commençons par un audit de votre infrastructure, suivi d'une proposition de solutions optimisées et de l'implémentation sécurisée."
+  }
 ];
 
-function FAQSection() {
+export default function FAQ() {
+  const [activeIndex, setActiveIndex] = useState(null);
+
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-black via-bleu to-white-400" id="faq">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-4xl md:font-bold mb-4 bg-gradient-to-r from-blue-600 via-blue-500 to-green-500 text-transparent bg-clip-text text-center">FAQ</h2>
-        <p className="text-lg text-gray-400 mb-10 text-center">Questions fréquentes sur nos services et notre accompagnement.</p>
-        <div className="space-y-6">
-          {faqs.map((faq, idx) => (
-            <details key={idx} className="bg-black-400 rounded-xl shadow p-4 border border-bleu-400">
-              <summary className="font-semibold text-gray-400 cursor-pointer text-lg">{faq.question}</summary>
-              <div className="mt-2 text-gray-400 text-base">{faq.answer}</div>
-            </details>
+    <section id="faq" className="py-20 bg-dark-100 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
+        {/* Titre de Section */}
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Questions <span className="text-blue-500">Fréquentes</span>
+          </h2>
+          <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-purple-500 mx-auto rounded-full" />
+        </div>
+
+        {/* Liste des Questions */}
+        <div className="space-y-4">
+          {faqData.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="border border-white/10 rounded-2xl overflow-hidden bg-white/5 backdrop-blur-sm"
+            >
+              <button
+                onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+                className="w-full flex items-center justify-between p-5 text-left transition-colors hover:bg-white/5"
+              >
+                <span className="flex items-center gap-3 font-semibold text-gray-200">
+                  <FaQuestionCircle className="text-blue-500 shrink-0" />
+                  {item.question}
+                </span>
+                <motion.div
+                  animate={{ rotate: activeIndex === index ? 180 : 0 }}
+                  className="text-gray-500"
+                >
+                  <FaChevronDown />
+                </motion.div>
+              </button>
+
+              <AnimatePresence>
+                {activeIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                  >
+                    <div className="px-5 pb-5 pt-0 text-gray-400 leading-relaxed border-t border-white/5 mt-2 pt-4">
+                      {item.answer}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
 }
-
-export default FAQSection;

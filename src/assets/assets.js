@@ -6,15 +6,19 @@ export const projet4 = '/images/projet4.jpg';
 export const projet5 = '/images/projet5.webp';
 export const projet6 = '/images/projet6.jpg';
 export const predictiveMaintenance = '/images/predictive-maintenance.png';
-export const profileImage = '/images/irChrist.jpg';
-export const profile1Image = '/images/irChrist.jpg';
 export const bgImage = '/images/background.jpg';
 export const programmationImage = '/images/image.programmation2.jpg';
 export const reactLogo = '/images/react.svg';
 export const logoImage = '/images/logo.png';
+export const profile7 = '/images/profile7.jpeg';
+export const irChrist = '/images/irchrist.jpg';
+export const logochristian = '/images/logochristian.jpeg';
+export const background8 = '/images/background8.jpeg';
+export const background9 = '/images/background9.jpeg';
+export const background10 = '/images/background10.jpeg';
 
 export const about =
-  "Ingénieur logiciel polyvalent avec expertise en développement Full Stack, spécialisé dans la création d'applications web et mobiles robustes et évolutives. Expérience en gestion de projet, tests logiciels et architecture moderne.";
+  "Ingénieur en réseaux informatiques et cybersécurité, je conçois et sécurise des infrastructures réseau performantes pour les entreprises. Avec une expertise en LAN/WAN, VPN, et sécurité réseau, j'aide les organisations à protéger leurs données et à optimiser leurs performances. Passionné par la technologie, je m'engage à fournir des solutions innovantes et fiables pour répondre aux besoins de mes clients.";
 
 export const skills = [
   // Frontend
